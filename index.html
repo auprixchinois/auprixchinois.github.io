@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Au Prix Chinois-ServiVie Lomé Togo</title>
+<meta name="description" content="ServiVie — Au Prix Chinois : commandez vos produits directement depuis la Chine au prix chinois réel, via ServiVie à Lomé, Togo.">
+<meta name="theme-color" content="#B3242A">
+<link rel="apple-touch-icon" id="appleIcon">
+<style>
+  :root{
+    --ink:#1C1A17;
+    --paper:#FBF6EE;
+    --red:#B3242A;
+    --red-deep:#7A1519;
+    --gold:#C89B3C;
+    --gold-soft:#E8D9AE;
+    --line:#E4D9C4;
+    --muted:#8A7F6E;
+    --white:#ffffff;
+    --font-display:'Zilla Slab','Georgia',serif;
+    --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);}
+  #app{min-height:100vh;display:flex;flex-direction:column;}
+
+  /* HEADER */
+  header.topbar{
+    position:sticky;top:0;z-index:30;
+    background:var(--red);color:var(--white);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 16px;
+  }
+  header.topbar .brandmark{display:flex;align-items:center;gap:10px;}
+  header.topbar .logo-badge{
+    width:34px;height:34px;border-radius:50%;background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-weight:700;color:var(--red-deep);font-size:15px;
+  }
+  header.topbar h1{font-family:var(--font-display);font-size:19px;margin:0;font-weight:600;letter-spacing:.2px;}
+  header.topbar .tagline{font-size:10.5px;opacity:.85;margin-top:1px;}
+  #adminBtn{
+    background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);
+    color:var(--white);padding:7px 13px;border-radius:20px;font-size:13px;
+    font-family:var(--font-body);cursor:pointer;
+  }
+  #adminBtn.active{background:var(--gold);color:var(--red-deep);border-color:var(--gold);font-weight:600;}
+  #qrBtn{
+    background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);
+    width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .qr-box img{width:200px;height:200px;border-radius:8px;border:1px solid var(--line);background:#fff;}
+  .qr-link{
+    font-size:11.5px;color:var(--muted);word-break:break-all;background:var(--paper);
+    border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:14px 0;
+  }
+  .qr-actions{display:flex;gap:8px;}
+  .qr-actions button{flex:1;font-size:13px;padding:10px 0;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;}
+  .qr-actions button.primary{background:var(--red);color:#fff;border-color:var(--red);}
+
+  main{flex:1;padding:16px 14px 90px;max-width:640px;margin:0 auto;width:100%;}
+
+  /* BOTTOM NAV */
+  nav.bottomnav{
+    position:fixed;bottom:0;left:0;right:0;z-index:30;
+    background:var(--white);border-top:1px solid var(--line);
+    display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  }
+  nav.bottomnav button{
+    flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:6px 2px;color:var(--muted);font-family:var(--font-body);font-size:11px;cursor:pointer;position:relative;
+  }
+  nav.bottomnav button svg{width:22px;height:22px;stroke:var(--muted);fill:none;stroke-width:1.8;}
+  nav.bottomnav button.active{color:var(--red);}
+  nav.bottomnav button.active svg{stroke:var(--red);}
+  nav.bottomnav .badge{
+    position:absolute;top:0;right:22%;background:var(--red);color:#fff;
+    font-size:9.5px;min-width:15px;height:15px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;padding:0 3px;
+  }
+
+  h2.section-title{font-family:var(--font-display);font-size:21px;margin:2px 0 14px;color:var(--ink);}
+  p.section-sub{color:var(--muted);font-size:13.5px;margin:-10px 0 16px;}
+
+  /* PRODUCT GRID */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .card{
+    background:var(--white);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .card .thumb{width:100%;aspect-ratio:1/1;background:var(--gold-soft) center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;}
+  .card .body{padding:9px 10px 11px;display:flex;flex-direction:column;gap:4px;flex:1;}
+  .card .title{font-size:13.5px;font-weight:600;line-height:1.3;}
+  .card .price{font-family:var(--font-display);color:var(--red-deep);font-size:15px;font-weight:600;}
+  .card .price-cn{font-size:11px;color:var(--muted);}
+  .card .closed-tag{font-size:10.5px;color:var(--red);font-weight:600;}
+  .card button.apply{
+    margin-top:auto;background:var(--red);color:#fff;border:none;border-radius:7px;
+    padding:8px 0;font-size:12.5px;font-weight:600;cursor:pointer;
+  }
+  .card button.apply:disabled{background:var(--muted);}
+  .card .admin-row{display:flex;gap:6px;margin-top:2px;}
+  .card .admin-row button{flex:1;font-size:11px;padding:6px 0;border-radius:6px;border:1px solid var(--line);background:#fff;cursor:pointer;}
+
+  .empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
+  .empty-state .big{font-size:34px;margin-bottom:6px;}
+
+  /* FLOATING ADD BUTTON */
+  #fabAdd{
+    position:fixed;bottom:86px;right:18px;z-index:25;
+    background:var(--red);color:#fff;border:none;border-radius:50%;
+    width:54px;height:54px;font-size:28px;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;
+  }
+
+  /* FORMS */
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px;}
+  .field input, .field textarea{
+    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;
+    font-size:15px;font-family:var(--font-body);background:#fff;color:var(--ink);
+  }
+  .field textarea{resize:vertical;min-height:70px;}
+  .btn-primary{
+    width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;
+    padding:13px 0;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-body);
+  }
+  .btn-secondary{
+    width:100%;background:none;color:var(--red);border:1px solid var(--red);border-radius:9px;
+    padding:11px 0;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px;
+  }
+  .form-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 16px;}
+  .imgpick{
+    border:1.5px dashed var(--line);border-radius:10px;padding:16px;text-align:center;
+    color:var(--muted);font-size:13px;cursor:pointer;margin-bottom:14px;position:relative;overflow:hidden;
+  }
+  .imgpick img{max-width:100%;max-height:160px;border-radius:6px;}
+  .imgpick input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+
+  .switch-mode{text-align:center;font-size:12.5px;color:var(--muted);margin-top:14px;}
+  .switch-mode a{color:var(--red);font-weight:600;text-decoration:none;}
+
+  /* MESSAGERIE */
+  .thread-list-item{
+    display:flex;gap:10px;align-items:center;padding:12px 8px;border-bottom:1px solid var(--line);cursor:pointer;
+  }
+  .thread-list-item .avatar{
+    width:42px;height:42px;border-radius:50%;background:var(--gold-soft);color:var(--red-deep);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-display);flex-shrink:0;
+  }
+  .thread-list-item .info{flex:1;min-width:0;}
+  .thread-list-item .name{font-size:14px;font-weight:600;}
+  .thread-list-item .preview{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .thread-list-item .meta{text-align:right;flex-shrink:0;}
+  .thread-list-item .time{font-size:10.5px;color:var(--muted);}
+  .dot-unread{width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block;margin-top:4px;}
+
+  .chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 130px);}
+  .chat-header{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px;}
+  .chat-header .back{background:none;border:none;font-size:20px;color:var(--red);cursor:pointer;padding:2px 6px 2px 0;}
+  .chat-header .name{font-weight:700;font-size:15px;}
+  .chat-scroll{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 2px 10px;}
+  .bubble{max-width:76%;padding:9px 12px;border-radius:14px;font-size:13.5px;line-height:1.4;}
+  .bubble img{max-width:100%;border-radius:8px;display:block;margin-bottom:4px;}
+  .bubble.mine{align-self:flex-end;background:var(--red);color:#fff;border-bottom-right-radius:3px;}
+  .bubble.theirs{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:3px;}
+  .bubble .tag-product{font-size:10.5px;opacity:.85;margin-bottom:3px;font-weight:600;}
+  .bubble .time{font-size:9.5px;opacity:.65;margin-top:3px;text-align:right;}
+  .chat-input-row{display:flex;gap:8px;align-items:center;padding-top:8px;border-top:1px solid var(--line);}
+  .chat-input-row textarea{
+    flex:1;border:1px solid var(--line);border-radius:18px;padding:10px 14px;font-size:14px;
+    resize:none;max-height:80px;font-family:var(--font-body);
+  }
+  .chat-input-row button.send{
+    background:var(--red);color:#fff;border:none;border-radius:50%;width:40px;height:40px;flex-shrink:0;
+    font-size:16px;cursor:pointer;
+  }
+  .chat-input-row label.attach{
+    width:38px;height:38px;border-radius:50%;border:1px solid var(--line);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);position:relative;font-size:17px;
+  }
+  .chat-input-row label.attach input{position:absolute;inset:0;opacity:0;}
+
+  .gate{text-align:center;padding:60px 20px;color:var(--muted);}
+  .gate .big{font-size:36px;margin-bottom:10px;}
+  .gate button{margin-top:16px;}
+
+  /* MODAL */
+  .modal-backdrop{
+    position:fixed;inset:0;background:rgba(28,26,23,.55);z-index:50;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-box{background:#fff;border-radius:14px;padding:22px 20px;width:100%;max-width:340px;text-align:center;}
+  .modal-box h3{font-family:var(--font-display);margin:0 0 6px;font-size:18px;}
+  .modal-box p{font-size:13px;color:var(--muted);margin:0 0 16px;}
+  .pin-dots{display:flex;justify-content:center;gap:10px;margin:10px 0 18px;}
+  .pin-dots div{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--red);}
+  .pin-dots div.filled{background:var(--red);}
+  .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .keypad button{
+    padding:14px 0;border-radius:10px;border:1px solid var(--line);background:#fff;
+    font-size:18px;font-family:var(--font-body);cursor:pointer;color:var(--ink);
+  }
+  .keypad button.wide{grid-column:span 1;color:var(--muted);font-size:13px;}
+  .toast{
+    position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+    background:var(--ink);color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;z-index:60;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brandmark">
+      <div class="logo-badge">Ag+</div>
+      <div>
+        <h1>Au Prix Chinois</h1>
+        <div class="tagline">ServiVie · Lomé, Togo</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button id="qrBtn" title="Partager l'application">
+        <svg viewBox="0 0 24 24" width="19" height="19" stroke="#fff" fill="none" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v0.01"/></svg>
+      </button>
+      <button id="adminBtn">Admin</button>
+    </div>
+  </header>
+
+  <main id="main"></main>
+
+  <button id="fabAdd" style="display:none;" title="Publier un produit">+</button>
+
+  <nav class="bottomnav">
+    <button data-view="home">
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      Accueil
+    </button>
+    <button data-view="messagerie">
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 01-8.5 8.5c-1.2 0-2.3-.25-3.3-.7L3 21l1.8-5.4A8.5 8.5 0 1121 11.5z"/></svg>
+      Messagerie
+      <span class="badge" id="msgBadge" style="display:none;">0</span>
+    </button>
+    <button data-view="inscription">
+      <svg viewBox="0 0 24 24"><path d="M20 21a8 8 0 10-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+      <span id="navAccountLabel">S'inscrire</span>
+    </button>
+  </nav>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+/* ======================= CONFIG ======================= */
+const SUPABASE_URL = "https://jsbosbvscjljjejcbhkf.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzYm9zYnZzY2psamplamNiaGtmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0Mjk2MDIsImV4cCI6MjEwNDAwNTYwMn0.-KfUSP9tWU-D3NNRkJxN6NQR09_t_6RLILyDWzmJAu4";
+const ADMIN_PIN = "2580"; // <-- change ce code ici pour définir ton PIN admin secret
+
+/* ======================= SUPABASE REST HELPERS ======================= */
+async function sbFetch(path, opts={}) {
+  const headers = Object.assign({
+    "apikey": SUPABASE_ANON_KEY,
+    "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+    "Content-Type": "application/json"
+  }, opts.headers||{});
+  if(opts.body) headers["Prefer"] = (headers["Prefer"]||"") + (opts.returning===false?"":",return=representation");
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {...opts, headers});
+  if(!res.ok){ const t = await res.text(); throw new Error(t || res.statusText); }
+  if(res.status === 204) return null;
+  const txt = await res.text();
+  return txt ? JSON.parse(txt) : null;
+}
+const sbGet = (path) => sbFetch(path, {method:"GET"});
+const sbInsert = (table, row) => sbFetch(`${table}`, {method:"POST", body: JSON.stringify(row)});
+const sbUpdate = (table, id, row) => sbFetch(`${table}?id=eq.${id}`, {method:"PATCH", body: JSON.stringify(row)});
+const sbDelete = (table, id) => sbFetch(`${table}?id=eq.${id}`, {method:"DELETE"});
+
+/* ======================= STATE ======================= */
+let session = JSON.parse(localStorage.getItem("apc_session") || "null"); // {type:'subscriber', id, name, phone} | {type:'admin'}
+let currentView = "home";
+let activeThreadSubscriberId = null; // when admin opens a specific conversation
+let pinBuffer = "";
+let pinMode = null; // 'admin' | 'login'
+let pendingLoginPhone = null;
+let pollTimer = null;
+
+function saveSession(){ localStorage.setItem("apc_session", JSON.stringify(session)); }
+function isAdmin(){ return session && session.type === "admin"; }
+function isSubscriber(){ return session && session.type === "subscriber"; }
+
+/* ======================= UTIL ======================= */
+function escapeHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtPrice(n){ if(n===null||n===undefined||n==="") return ""; return Number(n).toLocaleString("fr-FR"); }
+function fmtTime(iso){
+  const d = new Date(iso);
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  return sameDay ? d.toLocaleTimeString("fr-FR",{hour:'2-digit',minute:'2-digit'}) : d.toLocaleDateString("fr-FR",{day:'2-digit',month:'2-digit'});
+}
+function toast(msg){
+  const el = document.createElement("div");
+  el.className = "toast"; el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 2200);
+}
+function compressImage(file, maxW=900, quality=0.72){
+  return new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if(w > maxW){ h = Math.round(h * maxW / w); w = maxW; }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ======================= NAV ======================= */
+document.querySelectorAll(".bottomnav button[data-view]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    if(btn.dataset.view === "messagerie" && !session){
+      currentView = "gate"; render(); return;
+    }
+    activeThreadSubscriberId = null;
+    currentView = btn.dataset.view;
+    render();
+  });
+});
+document.getElementById("adminBtn").addEventListener("click", ()=>{
+  if(isAdmin()){
+    if(confirm("Se déconnecter du mode Admin ?")){
+      session = null; saveSession(); currentView = "home"; render();
+    }
+  } else {
+    pinMode = "admin"; pinBuffer=""; renderPinModal();
+  }
+});
+document.getElementById("fabAdd").addEventListener("click", ()=> openProductForm());
+document.getElementById("qrBtn").addEventListener("click", renderShareModal);
+
+/* ======================= PARTAGE / QR CODE ======================= */
+function renderShareModal(){
+  const url = window.location.href;
+  const qrImg = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&color=178-27-38&bgcolor=251-246-238&data=${encodeURIComponent(url)}`;
+  const root = document.getElementById("modalRoot");
+  root.innerHTML = `
+  <div class="modal-backdrop" id="shareBackdrop">
+    <div class="modal-box">
+      <h3>Partager l'application</h3>
+      <p>Scanne ou partage ce lien pour inviter d'autres abonnés</p>
+      <div class="qr-box"><img src="${qrImg}" alt="QR code Au Prix Chinois"></div>
+      <div class="qr-link">${escapeHtml(url)}</div>
+      <div class="qr-actions">
+        <button id="copyLinkBtn">Copier le lien</button>
+        <button id="shareLinkBtn" class="primary">Partager</button>
+      </div>
+      <button class="btn-secondary" id="closeShareBtn">Fermer</button>
+    </div>
+  </div>`;
+  document.getElementById("closeShareBtn").addEventListener("click", ()=> root.innerHTML="");
+  document.getElementById("copyLinkBtn").addEventListener("click", async ()=>{
+    try{ await navigator.clipboard.writeText(url); toast("Lien copié"); }
+    catch(e){ toast("Impossible de copier"); }
+  });
+  document.getElementById("shareLinkBtn").addEventListener("click", async ()=>{
+    if(navigator.share){
+      try{ await navigator.share({title:"Au Prix Chinois - ServiVie", text:"Commande tes produits au prix chinois réel 👇", url}); }
+      catch(e){}
+    } else {
+      try{ await navigator.clipboard.writeText(url); toast("Lien copié — colle-le dans WhatsApp"); }
+      catch(e){ toast("Copie le lien manuellement"); }
+    }
+  });
+}
+
+/* ======================= PIN MODAL ======================= */
+function renderPinModal(title, subtitle){
+  const root = document.getElementById("modalRoot");
+  const t = title || (pinMode==="admin" ? "Accès Admin" : "Entre ton code");
+  const s = subtitle || (pinMode==="admin" ? "Code secret à 4 chiffres" : "Connexion à ton compte");
+  root.innerHTML = `
+  <div class="modal-backdrop" id="pinBackdrop">
+    <div class="modal-box">
+      <h3>${t}</h3>
+      <p>${s}</p>
+      <div class="pin-dots">${[0,1,2,3].map(i=>`<div class="${i<pinBuffer.length?'filled':''}"></div>`).join("")}</div>
+      <div class="keypad">
+        ${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-k="${n}">${n}</button>`).join("")}
+        <button data-k="cancel" class="wide">Annuler</button>
+        <button data-k="0">0</button>
+        <button data-k="del" class="wide">⌫</button>
+      </div>
+    </div>
+  </div>`;
+  root.querySelectorAll("[data-k]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const k = b.dataset.k;
+      if(k==="cancel"){ pinMode=null; pendingLoginPhone=null; root.innerHTML=""; return; }
+      if(k==="del"){ pinBuffer = pinBuffer.slice(0,-1); renderPinModal(t,s); return; }
+      if(pinBuffer.length<4){ pinBuffer += k; }
+      if(pinBuffer.length===4){ submitPin(); } else { renderPinModal(t,s); }
+    });
+  });
+}
+async function submitPin(){
+  const root = document.getElementById("modalRoot");
+  if(pinMode==="admin"){
+    if(pinBuffer===ADMIN_PIN){
+      session = {type:"admin"}; saveSession();
+      root.innerHTML=""; pinMode=null; toast("Connecté en Admin");
+      currentView="home"; render();
+    } else {
+      toast("Code incorrect"); pinBuffer=""; renderPinModal();
+    }
+  } else if(pinMode==="login"){
+    try{
+      const subs = await sbGet(`subscribers?phone=eq.${encodeURIComponent(pendingLoginPhone)}&select=*`);
+      if(subs && subs[0] && subs[0].pin === pinBuffer){
+        session = {type:"subscriber", id:subs[0].id, name:subs[0].name, phone:subs[0].phone};
+        saveSession(); root.innerHTML=""; pinMode=null; pendingLoginPhone=null;
+        toast("Bienvenue " + subs[0].name);
+        currentView="home"; render();
+      } else {
+        toast("Code incorrect"); pinBuffer=""; renderPinModal();
+      }
+    }catch(e){ toast("Erreur de connexion"); }
+  }
+}
+
+/* ======================= RENDER ROOT ======================= */
+function updateChrome(){
+  document.getElementById("adminBtn").classList.toggle("active", isAdmin());
+  document.getElementById("adminBtn").textContent = isAdmin() ? "Admin ✓" : "Admin";
+  document.getElementById("fabAdd").style.display = (isAdmin() && currentView==="home") ? "block" : "none";
+  document.getElementById("navAccountLabel").textContent = isSubscriber() ? session.name.split(" ")[0] : "S'inscrire";
+  document.querySelectorAll(".bottomnav button[data-view]").forEach(b=>{
+    b.classList.toggle("active", b.dataset.view===currentView || (currentView==="gate" && b.dataset.view==="messagerie"));
+  });
+  refreshUnreadBadge();
+}
+
+async function refreshUnreadBadge(){
+  const badge = document.getElementById("msgBadge");
+  if(!session){ badge.style.display="none"; return; }
+  try{
+    if(isSubscriber()){
+      const rows = await sbGet(`messages?subscriber_id=eq.${session.id}&sender=eq.admin&read_by_subscriber=eq.false&select=id`);
+      badge.style.display = rows.length ? "flex" : "none"; badge.textContent = rows.length;
+    } else if(isAdmin()){
+      const rows = await sbGet(`messages?sender=eq.subscriber&read_by_admin=eq.false&select=id`);
+      badge.style.display = rows.length ? "flex" : "none"; badge.textContent = rows.length;
+    }
+  }catch(e){}
+}
+
+function render(){
+  updateChrome();
+  const main = document.getElementById("main");
+  if(pollTimer){ clearInterval(pollTimer); pollTimer=null; }
+  if(currentView==="home") return renderHome(main);
+  if(currentView==="inscription") return renderInscription(main);
+  if(currentView==="messagerie") return renderMessagerie(main);
+  if(currentView==="gate") return renderGate(main);
+}
+
+/* ======================= HOME ======================= */
+async function renderHome(main){
+  main.innerHTML = `<h2 class="section-title">Produits disponibles</h2>
+    <p class="section-sub">Choisis un produit, postule, et je m'occupe de la commande en Chine au prix réel.</p>
+    <div class="grid" id="prodGrid"><p style="color:var(--muted);font-size:13px;">Chargement…</p></div>`;
+  try{
+    const products = await sbGet(`products?select=*&order=created_at.desc`);
+    window.lastProducts = products;
+    const grid = document.getElementById("prodGrid");
+    if(!products.length){
+      grid.outerHTML = `<div class="empty-state"><div class="big">🧧</div>Aucun produit publié pour le moment.<br>Reviens bientôt !</div>`;
+      return;
+    }
+    grid.innerHTML = products.map(p => `
+      <div class="card">
+        <div class="thumb" style="${p.image_url?`background-image:url('${p.image_url}')`:''}">${p.image_url?'':'Sans image'}</div>
+        <div class="body">
+          <div class="title">${escapeHtml(p.title)}</div>
+          ${p.price_local ? `<div class="price">${fmtPrice(p.price_local)} FCFA</div>` : ""}
+          ${p.price_chinese ? `<div class="price-cn">Prix Chine : ${fmtPrice(p.price_chinese)} ¥</div>` : ""}
+          ${p.status==='clos' ? `<div class="closed-tag">Clôturé</div>` : ""}
+          ${isAdmin() ? `
+            <div class="admin-row">
+              <button onclick="editProduct('${p.id}')">Modifier</button>
+              <button onclick="toggleProductStatus('${p.id}','${p.status}')">${p.status==='clos'?'Rouvrir':'Clôturer'}</button>
+              <button onclick="deleteProduct('${p.id}')">Suppr.</button>
+            </div>
+          ` : `<button class="apply" ${p.status==='clos'?'disabled':''} onclick="applyToProduct('${p.id}','${escapeHtml(p.title).replace(/'/g,"\\'")}')">${p.status==='clos'?'Indisponible':'Postuler'}</button>`}
+        </div>
+      </div>
+    `).join("");
+  }catch(e){
+    document.getElementById("prodGrid").outerHTML = `<div class="empty-state">Impossible de charger les produits.<br><span style="font-size:11px">${escapeHtml(e.message)}</span></div>`;
+  }
+}
+
+async function toggleProductStatus(id, status){
+  await sbUpdate("products", id, {status: status==='clos' ? 'disponible' : 'clos'});
+  renderHome(document.getElementById("main"));
+}
+async function deleteProduct(id){
+  if(!confirm("Supprimer ce produit ?")) return;
+  await sbDelete("products", id);
+  renderHome(document.getElementById("main"));
+}
+
+function editProduct(id){
+  const p = (window.lastProducts||[]).find(x=>x.id===id);
+  if(!p){ toast("Produit introuvable, réessaie depuis l'accueil"); return; }
+  openProductForm(p);
+}
+
+function openProductForm(existing){
+  const isEdit = !!existing;
+  const main = document.getElementById("main");
+  main.innerHTML = `
+    <h2 class="section-title">${isEdit ? "Modifier le produit" : "Publier un produit"}</h2>
+    <div class="form-card">
+      <div class="imgpick" id="picWrap">
+        ${isEdit && existing.image_url ? `<img src="${existing.image_url}">` : "📷 Choisir une image"}
+        <input type="file" id="prodImg" accept="image/*">
+      </div>
+      <div class="field"><label>Titre du produit</label><input id="pTitle" placeholder="Ex : Écouteurs sans fil" value="${isEdit ? escapeHtml(existing.title) : ""}"></div>
+      <div class="field"><label>Description (optionnel)</label><textarea id="pDesc" placeholder="Détails, couleurs, tailles disponibles...">${isEdit ? escapeHtml(existing.description||"") : ""}</textarea></div>
+      <div class="field"><label>Prix chinois (¥, optionnel)</label><input id="pPriceCn" type="number" placeholder="Ex : 35" value="${isEdit && existing.price_chinese!=null ? existing.price_chinese : ""}"></div>
+      <div class="field"><label>Prix final FCFA (optionnel)</label><input id="pPriceLocal" type="number" placeholder="Ex : 12000" value="${isEdit && existing.price_local!=null ? existing.price_local : ""}"></div>
+      <button class="btn-primary" id="publishBtn">${isEdit ? "Enregistrer les modifications" : "Publier"}</button>
+      <button class="btn-secondary" onclick="currentView='home';render();">Annuler</button>
+    </div>`;
+  let imgData = isEdit ? (existing.image_url || null) : null;
+  document.getElementById("prodImg").addEventListener("change", async (e)=>{
+    const f = e.target.files[0]; if(!f) return;
+    imgData = await compressImage(f);
+    document.getElementById("picWrap").innerHTML = `<img src="${imgData}"><input type="file" id="prodImg2" accept="image/*" style="display:none;">`;
+  });
+  document.getElementById("publishBtn").addEventListener("click", async ()=>{
+    const title = document.getElementById("pTitle").value.trim();
+    if(!title){ toast("Le titre est obligatoire"); return; }
+    const payload = {
+      title,
+      description: document.getElementById("pDesc").value.trim(),
+      price_chinese: document.getElementById("pPriceCn").value || null,
+      price_local: document.getElementById("pPriceLocal").value || null,
+      image_url: imgData
+    };
+    try{
+      if(isEdit){
+        await sbUpdate("products", existing.id, payload);
+        toast("Produit modifié");
+      } else {
+        await sbInsert("products", {...payload, status: "disponible"});
+        toast("Produit publié");
+      }
+      currentView="home"; render();
+    }catch(e){ toast("Erreur : " + e.message); }
+  });
+}
+
+async function applyToProduct(productId, title){
+  if(!isSubscriber()){
+    toast("Inscris-toi ou connecte-toi d'abord");
+    currentView="inscription"; render(); return;
+  }
+  try{
+    await sbInsert("messages", {
+      subscriber_id: session.id,
+      sender: "subscriber",
+      content: `🛒 Candidature pour : ${title}`,
+      product_id: productId,
+      read_by_admin: false,
+      read_by_subscriber: true
+    });
+    toast("Candidature envoyée !");
+    currentView="messagerie"; render();
+  }catch(e){ toast("Erreur : " + e.message); }
+}
+
+/* ======================= INSCRIPTION / CONNEXION ======================= */
+function renderInscription(main){
+  if(isSubscriber()){
+    main.innerHTML = `
+      <h2 class="section-title">Mon compte</h2>
+      <div class="form-card">
+        <p style="margin:0 0 4px;font-weight:600;">${escapeHtml(session.name)}</p>
+        <p style="margin:0 0 18px;color:var(--muted);font-size:13px;">${escapeHtml(session.phone)}</p>
+        <button class="btn-secondary" id="logoutBtn">Se déconnecter</button>
+      </div>`;
+    document.getElementById("logoutBtn").addEventListener("click", ()=>{
+      session=null; saveSession(); currentView="home"; render();
+    });
+    return;
+  }
+  main.innerHTML = `
+    <h2 class="section-title">S'inscrire / Se connecter</h2>
+    <p class="section-sub">Un seul compte par numéro. Si tu as déjà un compte, entre ton numéro puis ton code.</p>
+    <div class="form-card">
+      <div class="field"><label>Nom complet</label><input id="rName" placeholder="Ex : Komla Agbeko"></div>
+      <div class="field"><label>Numéro de téléphone</label><input id="rPhone" type="tel" placeholder="Ex : 90 00 00 00"></div>
+      <div class="field"><label>Code secret à 4 chiffres (à retenir)</label><input id="rPin" type="tel" maxlength="4" placeholder="••••"></div>
+      <button class="btn-primary" id="regBtn">Continuer</button>
+    </div>`;
+  document.getElementById("regBtn").addEventListener("click", handleRegisterOrLogin);
+}
+
+async function handleRegisterOrLogin(){
+  const name = document.getElementById("rName").value.trim();
+  const phone = document.getElementById("rPhone").value.trim();
+  const pin = document.getElementById("rPin").value.trim();
+  if(!phone || pin.length!==4){ toast("Numéro et code à 4 chiffres requis"); return; }
+  try{
+    const existing = await sbGet(`subscribers?phone=eq.${encodeURIComponent(phone)}&select=*`);
+    if(existing && existing[0]){
+      if(existing[0].pin === pin){
+        session = {type:"subscriber", id:existing[0].id, name:existing[0].name, phone:existing[0].phone};
+        saveSession(); toast("Bon retour, " + existing[0].name); currentView="home"; render();
+      } else {
+        toast("Ce numéro existe déjà avec un autre code");
+      }
+      return;
+    }
+    if(!name){ toast("Le nom est obligatoire pour un nouveau compte"); return; }
+    const created = await sbInsert("subscribers", {name, phone, pin});
+    const row = created[0];
+    session = {type:"subscriber", id:row.id, name:row.name, phone:row.phone};
+    saveSession(); toast("Compte créé ! Bienvenue " + name);
+    currentView="home"; render();
+  }catch(e){ toast("Erreur : " + e.message); }
+}
+
+/* ======================= GATE (messagerie sans compte) ======================= */
+function renderGate(main){
+  main.innerHTML = `
+    <div class="gate">
+      <div class="big">💬</div>
+      Connecte-toi pour discuter avec ServiVie<br>et suivre tes candidatures.
+      <br><button class="btn-primary" style="max-width:220px;margin:16px auto 0;" onclick="currentView='inscription';render();">S'inscrire / Se connecter</button>
+    </div>`;
+}
+
+/* ======================= MESSAGERIE ======================= */
+function renderMessagerie(main){
+  if(!session){ return renderGate(main); }
+  if(isAdmin()){
+    if(activeThreadSubscriberId){ return renderChat(main, activeThreadSubscriberId, true); }
+    return renderAdminThreadList(main);
+  }
+  return renderChat(main, session.id, false);
+}
+
+async function renderAdminThreadList(main){
+  main.innerHTML = `<h2 class="section-title">Conversations</h2><div id="threadList"><p style="color:var(--muted);font-size:13px;">Chargement…</p></div>`;
+  try{
+    const subs = await sbGet(`subscribers?select=*&order=created_at.desc`);
+    const allMsgs = await sbGet(`messages?select=*&order=created_at.desc`);
+    const list = document.getElementById("threadList");
+    if(!subs.length){ list.outerHTML = `<div class="empty-state"><div class="big">👥</div>Aucun abonné inscrit pour l'instant.</div>`; return; }
+    const rows = subs.map(s=>{
+      const msgs = allMsgs.filter(m=>m.subscriber_id===s.id);
+      const last = msgs[0];
+      const unread = msgs.some(m=>m.sender==='subscriber' && !m.read_by_admin);
+      return {s, last, unread};
+    }).sort((a,b)=>{
+      if(!a.last) return 1; if(!b.last) return -1;
+      return new Date(b.last.created_at) - new Date(a.last.created_at);
+    });
+    list.innerHTML = rows.map(r=>`
+      <div class="thread-list-item" onclick="openThread('${r.s.id}')">
+        <div class="avatar">${escapeHtml(r.s.name.charAt(0).toUpperCase())}</div>
+        <div class="info">
+          <div class="name">${escapeHtml(r.s.name)}</div>
+          <div class="preview">${r.last ? (r.last.sender==='admin'?'Toi : ':'') + escapeHtml(r.last.content || '📷 Image') : "Aucun message"}</div>
+        </div>
+        <div class="meta">
+          ${r.last ? `<div class="time">${fmtTime(r.last.created_at)}</div>`:''}
+          ${r.unread ? `<span class="dot-unread"></span>` : ''}
+        </div>
+      </div>
+    `).join("");
+  }catch(e){
+    document.getElementById("threadList").outerHTML = `<div class="empty-state">Erreur de chargement.</div>`;
+  }
+}
+function openThread(subscriberId){ activeThreadSubscriberId = subscriberId; render(); }
+
+async function renderChat(main, subscriberId, adminView){
+  let subName = adminView ? "" : "ServiVie — Support";
+  main.innerHTML = `
+    <div class="chat-wrap">
+      <div class="chat-header">
+        ${adminView ? `<button class="back" onclick="activeThreadSubscriberId=null;render();">←</button>` : ""}
+        <div class="name" id="chatTitle">${adminView ? "Chargement…" : "ServiVie — Support"}</div>
+      </div>
+      <div class="chat-scroll" id="chatScroll"><p style="color:var(--muted);font-size:13px;text-align:center;">Chargement…</p></div>
+      <div class="chat-input-row">
+        <label class="attach">📎<input type="file" id="chatImg" accept="image/*"></label>
+        <textarea id="chatInput" rows="1" placeholder="Écris un message..."></textarea>
+        <button class="send" id="chatSend">➤</button>
+      </div>
+    </div>`;
+  if(adminView){
+    const subs = await sbGet(`subscribers?id=eq.${subscriberId}&select=*`);
+    document.getElementById("chatTitle").textContent = subs[0] ? subs[0].name : "Conversation";
+  }
+  const me = adminView ? "admin" : "subscriber";
+  let pendingImg = null;
+
+  async function loadMessages(scrollDown){
+    try{
+      const msgs = await sbGet(`messages?subscriber_id=eq.${subscriberId}&select=*&order=created_at.asc`);
+      const scroll = document.getElementById("chatScroll");
+      if(!scroll) return;
+      if(!msgs.length){
+        scroll.innerHTML = `<p style="color:var(--muted);font-size:13px;text-align:center;margin-top:20px;">Aucun message. Dis bonjour 👋</p>`;
+      } else {
+        scroll.innerHTML = msgs.map(m => `
+          <div class="bubble ${m.sender===me?'mine':'theirs'}">
+            ${m.product_id ? `<div class="tag-product">🛒 Candidature produit</div>` : ""}
+            ${m.image_url ? `<img src="${m.image_url}">` : ""}
+            ${m.content ? escapeHtml(m.content) : ""}
+            <div class="time">${fmtTime(m.created_at)}</div>
+          </div>
+        `).join("");
+      }
+      if(scrollDown) scroll.scrollTop = scroll.scrollHeight;
+      // mark read
+      const unread = msgs.filter(m => m.sender!==me && (me==='admin' ? !m.read_by_admin : !m.read_by_subscriber));
+      for(const m of unread){
+        sbUpdate("messages", m.id, me==='admin' ? {read_by_admin:true} : {read_by_subscriber:true}).catch(()=>{});
+      }
+      if(unread.length) refreshUnreadBadge();
+    }catch(e){}
+  }
+  await loadMessages(true);
+  pollTimer = setInterval(()=>loadMessages(false), 5000);
+
+  document.getElementById("chatImg").addEventListener("change", async (e)=>{
+    const f = e.target.files[0]; if(!f) return;
+    pendingImg = await compressImage(f, 800, 0.65);
+    toast("Image prête — écris un message ou envoie directement");
+  });
+  async function sendMsg(){
+    const val = document.getElementById("chatInput").value.trim();
+    if(!val && !pendingImg) return;
+    try{
+      await sbInsert("messages", {
+        subscriber_id: subscriberId,
+        sender: me,
+        content: val || null,
+        image_url: pendingImg,
+        read_by_admin: me==='admin',
+        read_by_subscriber: me==='subscriber'
+      });
+      document.getElementById("chatInput").value = "";
+      pendingImg = null;
+      await loadMessages(true);
+    }catch(e){ toast("Erreur d'envoi"); }
+  }
+  document.getElementById("chatSend").addEventListener("click", sendMsg);
+  document.getElementById("chatInput").addEventListener("keydown", (e)=>{
+    if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); sendMsg(); }
+  });
+}
+
+/* ======================= LOGIN VIA INSCRIPTION SI DEJA INSCRIT ======================= */
+// (géré directement dans handleRegisterOrLogin)
+
+/* ======================= PWA MANIFEST DYNAMIQUE ======================= */
+function buildIcon(size){
+  const c = document.createElement("canvas"); c.width=size; c.height=size;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#B3242A"; ctx.fillRect(0,0,size,size);
+  ctx.beginPath(); ctx.arc(size/2, size/2, size*0.34, 0, Math.PI*2);
+  ctx.fillStyle = "#C89B3C"; ctx.fill();
+  ctx.fillStyle = "#7A1519"; ctx.font = `700 ${size*0.22}px Georgia, serif`;
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText("Ag+", size/2, size/2 + size*0.02);
+  return c.toDataURL("image/png");
+}
+function setupManifest(){
+  const icon192 = buildIcon(192);
+  const icon512 = buildIcon(512);
+  document.getElementById("appleIcon").href = icon192;
+  const manifest = {
+    name: "Au Prix Chinois - ServiVie",
+    short_name: "Au Prix Chinois",
+    description: "ServiVie — Commandez vos produits au prix chinois réel, à Lomé, Togo.",
+    start_url: ".",
+    display: "standalone",
+    background_color: "#FBF6EE",
+    theme_color: "#B3242A",
+    icons: [
+      {src: icon192, sizes:"192x192", type:"image/png"},
+      {src: icon512, sizes:"512x512", type:"image/png"}
+    ]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:"application/json"});
+  const link = document.createElement("link");
+  link.rel = "manifest"; link.href = URL.createObjectURL(blob);
+  document.head.appendChild(link);
+}
+
+/* ======================= INIT ======================= */
+setupManifest();
+render();
+</script>
+</body>
+</html>
